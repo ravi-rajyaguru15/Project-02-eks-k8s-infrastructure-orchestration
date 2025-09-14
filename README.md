@@ -10,7 +10,7 @@
 
 This project is the **second milestone** in a self-designed 3-part DevOps portfolio projects designed to mirror the progression of infrastructure maturity in real-world engineering environments — from containerization, to orchestration, to full automation and observability on real world cloud infrastructure.
 
-- **Project 1**: Multi-service containerization and deployment using Docker Compose on AWS EC2  (https://github.com/ravi-rajyaguru15/Project-01-dockerized-multi-service-application)
+- **Project 1**: Multi-service containerization and deployment using Docker Compose on AWS EC2  [Project 1](https://github.com/ravi-rajyaguru15/Project-01-dockerized-multi-service-application)
 - **Project 2 (this)**: Kubernetes orchestration of the same application stack on AWS EKS  
 - **Project 3**: Infrastructure-as-Code with Terraform, CI/CD via GitHub Actions, and monitoring using Prometheus and Grafana
 
