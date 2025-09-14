@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+  labels: 
+    app: web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: web-app
+          image: ravi11rajyaguru/my-app
+          imagePullPolicy: Always
+          ports:
+            - name: web-app-port
+              containerPort: 8080
+          env:
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+
+      
+      # init containers: To ensure and check if the backend services of mysql, memcached and rabbitmq are up and running before web-app is deployed
+
+      initContainers:
+      - name: init-mysql
+        image: busybox
+        args: ["sh", "-c", "until nslookup mysql-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;"]
+      - name: init-memcached
+        image: busybox
+        args: ["sh", "-c", "until nslookup memcached.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;"]
+      - name: init-rabbitmq
+        image: busybox
+        args: ["sh", "-c", "until nslookup rabbitmq.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;"]
