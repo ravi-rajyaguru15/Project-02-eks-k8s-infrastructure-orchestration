@@ -57,8 +57,8 @@ This project showcases a real-world shift from local container coordination (Doc
 Project_02/
 │      
 ├── kubernetes/
-│   ├── deployments/                               # Pods for app, mysql, rabbitmq, memcached and initContainers
-│   │   ├── app-deployment.yaml
+│   ├── deployments/                               # Pods for app, mysql, rabbitmq, memcached 
+│   │   ├── app-deployment.yaml                      and initContainers
 │   │   ├── mysql-deployment.yaml
 │   │   ├── rabbitmq-deployment.yaml
 │   │   └── memcached-deployment.yaml
@@ -72,8 +72,8 @@ Project_02/
 │   ├── ingress/                                   # NGINX ingress resource
 │   │   └── nginx-ingress.yaml
 │   │
-│   ├── secrets/                                   # Base64 encoded secrets containing MySQL and RabbitMQ credntials
-│   │   └── secrets.yaml                                
+│   ├── secrets/                                   # Base64 encoded secrets containing MySQL 
+│   │   └── secrets.yaml                             and RabbitMQ credentials
 │   │
 │   └── persistentVolumeClaim/                     # MySQL PVC
 │       └── mysql-pvc.yaml
@@ -83,9 +83,9 @@ Project_02/
 │   └── architecture/
 |         └── project-2-architecture.png 
 │      
-├── legacy/                                        # Files and artifacts carried over from project 1 for continuity 
-│   ├── app/...                                      purposes, but are not an active part of project 2. 
-│   ├── mysql/... 
+├── legacy/                                        # Files and artifacts carried over from project 1  
+│   ├── app/...                                      for continuity purposes, but are not an active  
+│   ├── mysql/...                                    part of project 2.
 │   ├── nginx/...
 │   ├── images/...                         
 │   ├── .env                                                                           
