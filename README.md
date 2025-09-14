@@ -1,52 +1,116 @@
-# Multi-Service Java Web Application Deployment with Docker Compose on AWS EC2
+#  Project 2: Kubernetes Deployment of Multi-Service Java App on AWS EKS
 
-## About the 3-Project DevOps System
-This project is the foundational stage of a self-designed 3-part DevOps portfolio projects designed to mirror the progression of infrastructure maturity in real-world engineering environments — from containerization, to orchestration, to full automation and observability.
+[![EKS](https://img.shields.io/badge/Platform-AWS_EKS-blue)](#)
+[![Kubernetes](https://img.shields.io/badge/Orchestration-Kubernetes-informational)](#)
+[![Status](https://img.shields.io/badge/Deployment-Complete-brightgreen)](#)
 
-- **Project 1 (this)**: Multi-service containerization and deployment using Docker Compose on AWS EC2  
-- **Project 2**: Kubernetes orchestration of the same application stack on AWS EKS  
-- **Project 3**: Infrastructure-as-Code with Terraform, CI/CD via GitHub Actions, and monitoring using Prometheus and Grafana
+---
 
-The Java web application used in this project was externally sourced. However, to ensure the system appeared more production-ready and portfolio-appropriate, all course-specific branding was removed. UI elements and presentation were modified to reflect a generic, open-source-style internal platform. This allowed full attention to be directed toward infrastructure, deployment, and DevOps process engineering.
+##  Part of a 3-Project DevOps Progression
 
-## Project Overview
-This project demonstrates the deployment of a multi-tier Java web application using Docker Compose on a single EC2 instance in AWS. It includes five interdependent containers: Tomcat (web app), Maven (build), Nginx (reverse proxy), MySQL (database), RabbitMQ (message queue), and Memcached (cache).
+This project is the **second milestone** in a deliberately structured, three-part DevOps transformation system designed to reflect how modern applications evolve from basic containerization to full infrastructure automation and observability.
 
-The objective was to simulate a real-world, multi-container deployment in a controlled, reproducible environment. This is the foundational project in a 3-stage portfolio demonstrating a full DevOps transformation.
+| Stage       | Project                     | Focus                                |
+|-------------|-----------------------------|--------------------------------------|
+| 🚢 Project 1 | Docker Compose on AWS EC2   | Containerization + Deployment        |
+| ☸️ Project 2 | Kubernetes on AWS EKS       | Orchestration + Declarative Infra    |
+| ⚙️ Project 3 | Terraform + CI/CD + Observability | Automation + Monitoring + Delivery |
+
+---
+
+##  Project Overview
+
+This project transitions a previously containerized, multi-service Java web application (from Project 1) into a **modular, production-style Kubernetes deployment** on AWS. The focus here is on orchestration, service networking, persistent storage, and secure credential handling — all managed via **declarative Kubernetes manifests**.
+
+The infrastructure runs entirely on **AWS Elastic Kubernetes Service (EKS)**, provisioned using `eksctl` with built-in support for IAM roles and EBS CSI drivers. Custom Docker images for the core services are built and pulled from Docker Hub, while service dependencies are tightly managed using `initContainers`. The app is publicly exposed using an **NGINX Ingress Controller**, integrated with AWS load balancing.
+
+This project showcases a real-world shift from local container coordination (Docker Compose) to **cloud-native service orchestration** on Kubernetes, including ownership of the deployment lifecycle, image pipelines, storage, and networking.
+
+Summary:
+
+- Migrates a previously containerized Java web application to **Kubernetes**
+- Deploys to a **managed EKS cluster** using `eksctl`
+- Implements **multi-service orchestration**, including:
+  - Web frontend
+  - MySQL (PVC-backed)
+  - RabbitMQ (messaging)
+  - Memcached (caching)
+- Uses **NGINX Ingress**, **AWS IAM**, and **EBS CSI Driver**
+- All deployments are fully declarative via **YAML manifests**
+
+
+---
+##  Application Stack
+
+| Layer      | Component        | Purpose                          |
+|------------|------------------|----------------------------------|
+| Web        | `web-app`        | Java Spring Boot app via Tomcat  |
+| Database   | `mysql`          | PVC-backed relational DB         |
+| Messaging  | `rabbitmq`       | Queue-based messaging            |
+| Caching    | `memcached`      | In-memory key-value store        |
+| Ingress    | `nginx`          | HTTP routing & reverse proxy     |
+
+---
+
+##  Infrastructure Overview
+
+| Component      | Role                                                       |
+|----------------|------------------------------------------------------------|
+| **EKS**        | Fully managed Kubernetes cluster                           |
+| **EC2**        | Worker nodes for running pods                              |
+| **EBS**        | Persistent backend for MySQL PVC                           |
+| **S3**         | Mounted via CSI driver for long-term MySQL storage         |
+| **IAM Role**   | Grants access to EBS/S3 storage classes                    |
+| **ELB**        | Provisioned via Ingress for public web access              |
+
+---
 
 ## Architecture Overview
 ![Project 2 architecture](images/architecture/project-2-architecture.png)
 
-## Technologies Used
-- AWS EC2 (Ubuntu server)  
-- Docker  
-- Docker Compose  
-- Nginx (reverse proxy)  
-- Tomcat (Java application server)  
-- Maven (build container)  
-- MySQL (database)  
-- RabbitMQ (message queue)  
-- Memcached (in-memory caching)
+---
 
 ## Repository Structure
 ```text
-Project_01/
-├── app/
-│   ├── Dockerfile                              # Multi-stage Dockerfile (Maven -> Tomcat)
-│   ├── src/                                    # Java web app source files
-│   └── pom.xml                                 # Maven project file
-├── mysql/
-│   ├── Dockerfile                              # MySQL Dockerfile
-│   └── db_backup.sql                           # .sql file to seed the MySQL database
-├── nginx/
-│   └── default.conf                            # Reverse proxy configuration
+Project_02/
+│      
+├── kubernetes/
+│   ├── deployments/                               # Pods for app, mysql, rabbitmq, memcached and initContainers
+│   │   ├── app-deployment.yaml
+│   │   ├── mysql-deployment.yaml
+│   │   ├── rabbitmq-deployment.yaml
+│   │   └── memcached-deployment.yaml
+│   │
+│   ├── services/                                  # ClusterIP services      
+│   │   ├── web-app-service.yaml
+│   │   ├── mysql-service.yaml
+│   │   ├── rabbitmq-service.yaml
+│   │   └── memcached-service.yaml
+│   │
+│   ├── ingress/                                   # NGINX ingress resource
+│   │   └── nginx-ingress.yaml
+│   │
+│   ├── secrets/                                   # Base64 encoded secrets containing MySQL and RabbitMQ credntials
+│   │   └── secrets.yaml                                
+│   │
+│   └── persistentVolumeClaim/                     # MySQL PVC
+│       └── mysql-pvc.yaml
+│      
 ├── images/
-|   ├── screenshots/                            # Screenshots of running services, EC2 instance, web app on EC2 public IP, etc.  
+|   ├── screenshots/...                            
 │   └── architecture/
-|         └── project-1-architecture.png        # Architecture overview diagram of Project 1
-├── .env                                        # Environment file to store credentials for MySQL and RabbitMQ
-├── docker-compose.yaml                         # Docker compose file that defines 5 services
-└── README.md                                   # Project README (You are here) (Inception!)
+|         └── project-2-architecture.png 
+│      
+├── legacy/                                        # Files and artifacts carried over from project 1 for continuity 
+│   ├── app/...                                      purposes, but are not an active part of project 2. 
+│   ├── mysql/... 
+│   ├── nginx/...
+│   ├── images/...                         
+│   ├── .env                                                                           
+│   └── docker-compose.yaml  
+│                                 
+├── project2-eksctl-config.yaml                    # Cluster definition configuration file for eksctl     
+└── README.md                                      # Project README (You are here) (Inception!)
 ```
 
 ## How to Deploy to AWS EC2
@@ -73,29 +137,36 @@ Project_01/
 9. Terminate the EC2 instance if not needed to avoid incurring unnecessary AWS costs.    
 
 ## Key Features
-- Multi-container orchestration with Docker Compose  
-- Containerized build process using Maven  
-- Reverse proxy routing with Nginx  
-- Dynamic runtime configuration using environment variables via `.env`  
-- Inter-container communication using a shared Docker network  
-- Production-style deployment on AWS EC2
+- Kubernetes orchestration of 4 production-style services
+- Secure credential injection via K8s Secrets
+- Persistent storage via EBS (PVC-bound)
+- Public ingress routing via AWS ELB
+- Modular manifest structure (prod-aligned)
+- Debugged real-world issues:
+     - CrashLoopBackOff
+     - IAM binding failures
+     - PVC mount errors
+
 
 ## Engineering Decisions
-- Chose Docker Compose to manage service dependencies and simplify orchestration of multiple containers on a single host  
-- Used Maven as a standalone build container to ensure a reproducible `.war` file generation during deployment  
-- Applied Nginx as a reverse proxy for abstraction and better request routing to the Tomcat container  
-- Migrated hardcoded credentials (e.g., MySQL, RabbitMQ) into environment variables via a `.env` file to support better configuration management  
-- Explicitly declared Docker networks and service dependencies in `docker-compose.yml` to control container startup order and network resolution  
-- Isolated persistent data volumes where applicable for database containers
-- Used real AWS infrastructure to simulate real-world cloud provisioning — this was not done locally to maximize cloud readiness and practice debugging on real infrastructure.
+- Custom Docker images pushed to Docker Hub (web-app, mysql)
+- IAM role + EBS CSI driver configured in eksctl YAML
+- initContainers used to:
+     - Wait for RabbitMQ, MySQL, Memcached readiness
+     - Clean lost+found/ in EBS volumes (MySQL PVC)
+- Manual Ingress install via YAML (no Helm)
+- YAML-first approach — every manifest written by hand
 
 ## What This Project Demonstrates
-- Foundational understanding of container-based application architecture  
-- Practical use of Docker Compose for service orchestration  
-- AWS EC2 provisioning and deployment flow  
-- Secure handling of environment-specific configurations using `.env`  
-- Hands-on deployment of a stateful, multi-tier web app  
-- Reproducible build pipeline within a cloud-hosted Linux environment
+- Kubernetes orchestration of 4 production-style services   
+- Secure credential injection via K8s Secrets
+- Persistent storage via EBS (PVC-bound)
+- Public ingress routing via AWS ELB
+- Modular manifest structure (prod-aligned)
+- Debugged real-world issues:
+     - CrashLoopBackOff
+     - IAM binding failures
+     - PVC mount errors
 
 ## Attribution
-The Java application used in this project was externally sourced. All containerization, orchestration, deployment strategy, and infrastructure setup were independently implemented. Although it being way out of scope, the application was modified to remove course branding and to be presented as a general-purpose internal platform. The main goal was to practice and demonstrate key DevOps skills, in this case, containerization of multi-service web application and deplyment on cloud infrastructure.
+The Java application used in this project was externally sourced. All containerization, orchestration, deployment strategy, and infrastructure setup were independently implemented. Although it being way out of scope, the application was modified to remove course branding and to be presented as a general-purpose internal platform. The main goal was to practice and demonstrate key DevOps skills, in this case, orchestration and deployment of multi-service web application on AWS EKS cloud infrastructure.
