@@ -94,6 +94,7 @@ Project_02/
 ├── project2-eksctl-config.yaml                    # Cluster definition configuration file for eksctl     
 └── README.md                                      # Project README (You are here) (Inception!)
 ```
+---
 
 ## How to Deploy (Reproduction steps)
 1.  **Prerequisites/Dependencies**:
@@ -136,6 +137,7 @@ Project_02/
 8. Access the web-application using the DNS endpoint form ingress nginx service: 
     ```bash
     # Locate EXTERNAL-IP of ingress-nginx service
+    
     kubectl get svc -n ingress-nginx
     ```
 8. After verification of web app, terminate and clean the eks cluster and VPC to avoid incurring unnecessary AWS costs:
@@ -144,6 +146,7 @@ Project_02/
     ```
     ```bash
     # here node eviction is disabled as one of the pods is covered by PodDisruptionBudget (PDB) so eviction API does not let that pod to be evicted resulting in cluster deletion being stuck in this phase. This is the alternate way to delete cluster.
+    
     eksctl delete cluster \
     --name project2-eks-cluster \
     --region us-east-1 \
