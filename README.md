@@ -23,7 +23,9 @@ This project transitions a previously containerized, multi-service Java web appl
 The infrastructure runs entirely on **AWS Elastic Kubernetes Service (EKS)**, provisioned using `eksctl` with built-in support for IAM roles and EBS CSI drivers. Custom Docker images for the core services are built and pulled from Docker Hub registry, while service dependencies are tightly managed using `initContainers`. The app is publicly exposed using an **NGINX Ingress Controller**, integrated with AWS load balancing. 
 
 This project showcases a real-world shift from local container coordination (Docker Compose) to **cloud-native service orchestration** on Kubernetes, including ownership of the deployment lifecycle, image pipelines, storage, and networking.
+
 ---
+
 ##  Application Stack
 
 | Layer      | Component        | Purpose                                  |
