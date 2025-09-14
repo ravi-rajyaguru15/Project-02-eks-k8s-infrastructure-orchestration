@@ -98,8 +98,8 @@ Project_02/
 
 ## How to Deploy (Reproduction steps)
 1.  **Prerequisites/Dependencies**:
-- Local machine with `aws-cli`, `eksctl`, `kubectl`, and `git` installed
-- AWS account configured via aws cli, and with appropriate IAM user, and access rights. 
+      - Local machine with `aws-cli`, `eksctl`, `kubectl`, and `git` installed
+      - AWS account configured via aws cli, and with appropriate IAM user, and access rights. 
 2. Open the bash terminal and fetch the project files via git clone, and navigate into the project folder.
 3. Create EKS cluster:
     ```bash
