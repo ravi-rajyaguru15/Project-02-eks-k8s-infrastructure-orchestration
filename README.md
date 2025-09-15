@@ -48,11 +48,13 @@ This project demonstrates a real-world transition from local container coordinat
 ---
 
 ## Architecture Overview
+
 ![Project 2 architecture](images/architecture/project-2-architecture.png)
 
 ---
 
 ## Repository Structure
+
 ```text
 Project_02/
 │      
@@ -97,6 +99,7 @@ Project_02/
 ---
 
 ## How to Deploy (Reproduction steps)
+
 1.  **Prerequisites/Dependencies**:
       - Local machine with `aws-cli`, `eksctl`, `kubectl`, and `git` installed
       - AWS account configured via aws cli, and with appropriate IAM user, and access rights. 
@@ -155,7 +158,8 @@ Project_02/
     ```   
 ---
 
-## Engineering Decisions
+## Engineering Insights
+
 - **Declarative Manifests**: All Kubernetes resources were defined using raw YAML manifests without Helm or third-party abstractions. This ensured complete visibility and control over each resource, which was critical in debugging and refining cluster behavior during development.
 - **PVC Binding Automation**: EBS volumes required manual CSI driver and IAM configuration; automated this to ensure smooth pod startup.
 - **initContainer Usage**:
@@ -167,6 +171,7 @@ Project_02/
 ---
 
 ## What This Project Demonstrates
+
 - Proficiency in Kubernetes fundamentals and cloud native orchestration on AWS EKS infrastructure.
 - Solid understanding of pods, services, ingress, secrets, volumes, VPC, subnets, etc.
 - Real-world problem-solving and debugging (PVC, IAM, image pulls).
@@ -176,6 +181,9 @@ Project_02/
 ---
 
 ## Attribution
+
 The Java web application used in this project was externally sourced. All containerization, orchestration, deployment strategy, and infrastructure setup were independently implemented. Although it being way out of scope, and to ensure the system appeared more production-ready and portfolio-appropriate, all course-specific branding was removed; UI elements and presentation were modified to reflect a generic, open-source-style web application. 
 
 A delibrate and calculated decision was also made to use the same web apllication throughout all 3 projects. This allowed full attention to be directed towards infrastructure, deployment, and DevOps process engineering.
+
+---
