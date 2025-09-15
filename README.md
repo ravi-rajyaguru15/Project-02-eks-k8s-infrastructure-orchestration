@@ -1,4 +1,4 @@
-#  Project 2: Kubernetes Deployment of Multi-Service Java App on AWS EKS
+#  Project 2: Kubernetes Deployment of Multi-Service Java Application on AWS EKS
 
 [![EKS](https://img.shields.io/badge/Platform-AWS_EKS-blue)](#)
 [![Kubernetes](https://img.shields.io/badge/Orchestration-Kubernetes-informational)](#)
@@ -20,9 +20,9 @@ This project is the **second milestone** in a self-designed 3-part DevOps portfo
 
 This project transitions a previously containerized, multi-service Java web application (from Project 1) into a **modular, production-style Kubernetes deployment** on AWS. The focus here is on orchestration, service networking, persistent storage, and secure credential handling — all managed via **declarative Kubernetes manifests**.
 
-The infrastructure runs entirely on **AWS Elastic Kubernetes Service (EKS)**, provisioned using `eksctl` with built-in support for IAM roles and EBS CSI drivers. Custom Docker images for the core services are built and pulled from Docker Hub registry, while service dependencies are tightly managed using `initContainers`. The app is publicly exposed using an **NGINX Ingress Controller**, integrated with AWS load balancing. 
+Runs fully on **AWS Elastic Kubernetes Service (EKS)** provisioned via `eksctl` with integrated support for IAM roles and EBS CSI drivers. Custom Docker images for the core services are built and pulled from Docker Hub registry, while service dependencies are tightly managed using `initContainers`. The app is publicly exposed using an **NGINX Ingress Controller**, integrated with AWS load balancing. 
 
-This project showcases a real-world shift from local container coordination (Docker Compose) to **cloud-native service orchestration** on Kubernetes, including ownership of the deployment lifecycle, image pipelines, storage, and networking.
+This project demonstrates a real-world transition from local container coordination (Docker Compose) to **cloud-native orchestration** using Kubernetes on AWS.
 
 ---
 
