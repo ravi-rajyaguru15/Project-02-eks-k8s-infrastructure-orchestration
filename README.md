@@ -1,4 +1,4 @@
-#  Project 2: Kubernetes Deployment of Multi-Service Java Application on AWS EKS
+# Project 2: Kubernetes Deployment of Multi-Service Java Application on AWS EKS
 
 [![EKS](https://img.shields.io/badge/Platform-AWS_EKS-blue)](#)
 [![Kubernetes](https://img.shields.io/badge/Orchestration-Kubernetes-informational)](#)
@@ -6,50 +6,50 @@
 
 ---
 
-##  Part of a 3-Project DevOps Progression
+## About the 3-Project DevOps System
 
-This project is the **second milestone** in a self-designed 3-part DevOps portfolio projects designed to mirror the progression of infrastructure maturity in real-world engineering environments — from containerization, to orchestration, to full automation and observability on real world cloud infrastructure.
+This self-designed, 3-part DevOps portfolio series is intended to demonstrate the staged cloud migration and infrastructure maturity path of a multi-service web application: from containerization, to Kubernetes orchestration, to infrastructure automation, CI/CD, and observability.
 
 - **Project 1**: Multi-service containerization and deployment using Docker Compose on AWS EC2 - [Project 1](https://github.com/ravi-rajyaguru15/Project-01-dockerized-multi-service-application)
 - **Project 2 (this)**: Kubernetes orchestration of the same application stack on AWS EKS  
-- **Project 3**: Infrastructure-as-Code with Terraform, CI/CD via GitHub Actions, and monitoring using Prometheus and Grafana - [Project 3](https://github.com/ravi-rajyaguru15/Project-03-terraform-cicd-observability-pipeline)
+- **Project 3**: Infrastructure as Code with Terraform, CI/CD via GitHub Actions, and monitoring using Prometheus and Grafana - [Project 3](https://github.com/ravi-rajyaguru15/Project-03-terraform-cicd-observability-pipeline)
+
+The Java web application used across this portfolio is externally sourced. Minor UI/content adjustments are made to remove source-specific branding and present it as a neutral demo web application. The infrastructure design, containerization, cloud deployment, Kubernetes manifests, Terraform configuration, CI/CD workflow setup, monitoring integration, documentation, troubleshooting, and migration-stage decisions were independently implemented. The same application stack is intentionally reused across all three projects so the focus remains on infrastructure maturity and core DevOps practices.
 
 ---
 
-##  Project Overview
+## Project Overview
 
-This project transitions a previously containerized, multi-service Java web application (from Project 1) into a **modular, production-style Kubernetes deployment** on AWS. The focus here is on orchestration, service networking, persistent storage, and secure credential handling — all managed via **declarative Kubernetes manifests**.
+This project demonstrates the second migration stage: moving the previously containerized multi-service Java web application stack from Docker Compose on AWS EC2 to Kubernetes orchestration on AWS EKS.
 
-Runs fully on **AWS Elastic Kubernetes Service (EKS)** provisioned via `eksctl` with integrated support for IAM roles and EBS CSI drivers. Custom Docker images for the core services are built and pulled from Docker Hub registry, while service dependencies are tightly managed using `initContainers`. The app is publicly exposed using an **NGINX Ingress Controller**, integrated with AWS load balancing. 
-
-This project demonstrates a real-world transition from local container coordination (Docker Compose) to **cloud-native orchestration** using Kubernetes on AWS.
+The same application stack from Project 1 is represented using Kubernetes resources such as Deployments, Services, Ingress, Secrets, PersistentVolumeClaims, and initContainers. The EKS cluster is provisioned using `eksctl`, with IAM/OIDC and EBS CSI support configured for PVC-backed persistent storage. The application is exposed externally through an NGINX Ingress Controller backed by AWS load balancing.
 
 ---
 
-##  Application Stack
+## Project Scope
 
-| Layer      | Component        | Purpose                                  |
-|------------|------------------|------------------------------------------|
-| Web        | `web-app`        | Java web app via Tomcat (+ Maven build)  |
-| Database   | `mysql`          | PVC-backed relational Database           |
-| Messaging  | `rabbitmq`       | Queue-based messaging                    |
-| Caching    | `memcached`      | In-memory caching layer                  |
-| Ingress    | `nginx`          | HTTP routing & reverse proxy             |
+This stage focuses on Kubernetes orchestration, internal service discovery through Kubernetes Services and cluster DNS, internal service communication, ingress routing, Kubernetes-based runtime configuration, EBS-backed persistent storage, and hands-on troubleshooting inside a managed EKS cluster.
 
----
-
-##  Infrastructure Overview (AWS)
-
-- EKS Cluster with 2 managed node groups (created via eksctl)
-- VPC with subnets, route tables, security groups (automatically managed by eksctl)
-- Elastic Block Store (EBS) for persistent storage
-- IAM role + EBS CSI Driver manually configured to allow PVC binding
+It is not intended to represent a fully production-operated Kubernetes environment. Advanced access control, deeper security hardening, autoscaling, centralized logging, advanced secret management, release strategy, reliability practices, and team-based operational workflows are intentionally outside the scope of this stage and are areas I aim to deepen through professional cloud/platform engineering experience.
 
 ---
 
 ## Architecture Overview
 
 ![Project 2 architecture](images/architecture/project-2-architecture.png)
+
+---
+
+## Tech Stack
+
+- **Infrastructure**: AWS EKS, EKS managed node groups, VPC networking managed through `eksctl`
+- **Cluster Provisioning**: `eksctl`
+- **Orchestration**: Kubernetes
+- **Workloads**: Tomcat web app, MySQL, RabbitMQ, Memcached
+- **Routing**: NGINX Ingress Controller, Kubernetes Ingress
+- **Storage**: PersistentVolumeClaim, Amazon EBS, EBS CSI Driver
+- **Runtime Configuration & Startup Control**: Kubernetes Secrets, initContainers
+- **Tooling**: `kubectl`, AWS CLI, Docker Hub
 
 ---
 
@@ -91,19 +91,19 @@ Project_02/
 │   ├── nginx/...
 │   ├── images/...                         
 │   ├── .env                                                                           
-│   └── docker-compose.yaml  
+│   └── docker-compose.yml  
 │                                 
 ├── project2-eksctl-config.yaml                    # Cluster definition configuration file for eksctl     
-└── README.md                                      # Project README (You are here) (Inception!)
+└── README.md                                      # Project README
 ```
 ---
 
-## How to Deploy (Reproduction steps)
+## How to Deploy (Reproduction Steps)
 
 1.  **Prerequisites/Dependencies**:
       - Local machine with `aws-cli`, `eksctl`, `kubectl`, and `git` installed
-      - AWS account configured via aws cli, and with appropriate IAM user, and access rights. 
-2. Open the bash terminal and fetch the project files via git clone, and navigate into the project folder.
+      - AWS account configured via AWS CLI, and with appropriate IAM permissions.
+2. Open a bash terminal and fetch the project files via git clone, and navigate into the project folder.
 3. Create EKS cluster:
     ```bash
     eksctl create cluster -f project2-eksctl-config.yaml
@@ -123,7 +123,7 @@ Project_02/
     kubectl get pods -n ingress-nginx
     kubectl get svc -n ingress-nginx
     ```
-6. Apply Kubernetes Manifests:
+6. Apply Kubernetes manifests:
     ```bash
     kubectl apply -f kubernetes/secrets/
     kubectl apply -f kubernetes/persistentVolumeClaim/
@@ -137,18 +137,18 @@ Project_02/
    kubectl get pvc
    kubectl get all
     ```
-8. Access the web-application using the DNS endpoint form ingress nginx service: 
+8. Access the web application using the external DNS endpoint from the NGINX Ingress Controller service: 
     ```bash
     # Locate EXTERNAL-IP of ingress-nginx service
     
     kubectl get svc -n ingress-nginx
     ```
-8. After verification of web app, terminate and clean the eks cluster and VPC to avoid incurring unnecessary AWS costs:
+9. After verification of web app, terminate and clean the EKS cluster and VPC to avoid incurring unnecessary AWS costs:
     ```bash
-    eksctl delete cluster   --name project2-eks-cluster
+    eksctl delete cluster --name project2-eks-cluster --region us-east-1
     ```
     ```bash
-    # here node eviction is disabled as one of the pods is covered by PodDisruptionBudget (PDB) so eviction API does not let that pod to be evicted resulting in cluster deletion being stuck in this phase. This is the alternate way to delete cluster.
+    # If cluster deletion gets stuck during node group eviction, the following force cleanup command can be used:
     
     eksctl delete cluster \
     --name project2-eks-cluster \
@@ -160,30 +160,11 @@ Project_02/
 
 ## Engineering Insights
 
-- **Declarative Manifests**: All Kubernetes resources were defined using raw YAML manifests without Helm or third-party abstractions. This ensured complete visibility and control over each resource, which was critical in debugging and refining cluster behavior during development.
-- **PVC Binding Automation**: EBS volumes required manual CSI driver and IAM configuration; automated this to ensure smooth pod startup.
-- **initContainer Usage**:
-	 - In mysql: removes lost+found directory from EBS to prevent startup failure
-	 - In web-app: waits for MySQL, RabbitMQ, and Memcached to become ready beforehand
-- **Custom Dockerhub registry Images**: Custom images for web-app and database built, tagged, and pushed to Docker Hub — ensures reproducibility and ownership
-- **Debugging Experience**: Faced issues like CrashLoopBackOff, PVC mount errors, IAM permission errors — all resolved hands-on
-
----
-
-## What This Project Demonstrates
-
-- Proficiency in Kubernetes fundamentals and cloud native orchestration on AWS EKS infrastructure.
-- Solid understanding of pods, services, ingress, secrets, volumes, VPC, subnets, etc.
-- Real-world problem-solving and debugging (PVC, IAM, image pulls).
-- Attention to security, modularity, and production readiness, and cost awareness.
-- Artifact and image lifecycle ownership through private Docker Hub repos.
-
----
-
-## Attribution
-
-The Java web application used in this project was externally sourced. All containerization, orchestration, deployment strategy, and infrastructure setup were independently implemented. Although modifying the frontend was beyond the initial scope, and also to ensure the system appeared more production-ready and portfolio-appropriate, all course-specific branding was removed; UI elements and presentation were modified to reflect a generic, open-source-style web application. 
-
-A delibrate and calculated decision was also made to use the same web apllication throughout all 3 projects. This allowed full attention to be directed towards infrastructure, deployment, and DevOps process engineering.
+- Built Kubernetes resources using raw YAML manifests without Helm or third-party abstractions, which helped maintain visibility into Deployments, Services, Ingress, Secrets, and PVC behavior.
+- Configured IAM/OIDC and EBS CSI support through `eksctl` to enable PVC-backed persistent storage on EKS, after initially troubleshooting manual PVC binding and storage provisioning issues.
+- Used initContainers in MySQL to handle EBS-mounted filesystem behavior before database startup.
+- Used initContainers in the web application deployment to delay startup until dependent service DNS names were resolvable inside the cluster.
+- Built, tagged, and published custom Docker Hub images for the web app and database to support reproducible deployments.
+- Debugged deployment issues including CrashLoopBackOff events, PVC mount failures, IAM permission errors, service discovery issues, and image pull behavior.
 
 ---
