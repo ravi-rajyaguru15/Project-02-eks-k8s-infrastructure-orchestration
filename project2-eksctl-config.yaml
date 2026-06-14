@@ -23,17 +23,11 @@ nodeGroups:
 
 iam:
   withOIDC: true
-  serviceAccounts:
-    - metadata:
-        name: ebs-csi-controller-sa
-        namespace: kube-system
-      wellKnownPolicies:
-        ebsCSIController: true
-      roleName: AmazonEKS_EBS_CSI_DriverRole
-      roleOnly: false
-      
-      
-
+     
 addons:
+  - name: eks-pod-identity-agent
+    version: latest
+
   - name: aws-ebs-csi-driver
     version: latest
+    useDefaultPodIdentityAssociations: true
