@@ -150,7 +150,7 @@ Project_02/
     kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/aws/deploy.yaml
     ```
 
-10. Thenafter terminate and clean the EKS cluster and VPC to avoid incurring unnecessary AWS costs:
+10. Thereafter terminate and clean the EKS cluster and VPC to avoid incurring unnecessary AWS costs:
     ```bash
     eksctl delete cluster --name project2-eks-cluster --region us-east-1
     ```
@@ -163,7 +163,7 @@ Project_02/
     --disable-nodegroup-eviction \
     --force
     ```
-       
+
 ---
 
 ## Engineering Insights
