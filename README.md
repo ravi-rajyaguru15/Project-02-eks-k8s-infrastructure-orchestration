@@ -6,13 +6,14 @@
 
 ---
 
-## About the 3-Project DevOps System
+## About the 4-Project DevOps System
 
-This self-designed, 3-part DevOps portfolio series is intended to demonstrate the staged cloud migration and infrastructure maturity path of a multi-service web application: from containerization, to Kubernetes orchestration, to infrastructure automation, CI/CD, and observability.
+This self-designed, 4-part DevOps portfolio series is intended to demonstrate the staged cloud migration and infrastructure maturity path of a multi-service web application: from containerization, to Kubernetes orchestration, to infrastructure automation, CI/CD, and observability and finally to Gitops-based application delivery.
 
 - **Project 1**: Multi-service containerization and deployment using Docker Compose on AWS EC2 - [Project 1](https://github.com/ravi-rajyaguru15/Project-01-dockerized-multi-service-application)
 - **Project 2 (this)**: Kubernetes orchestration of the same application stack on AWS EKS  
 - **Project 3**: Infrastructure as Code with Terraform, CI/CD via GitHub Actions, and monitoring using Prometheus and Grafana - [Project 3](https://github.com/ravi-rajyaguru15/Project-03-terraform-cicd-observability-pipeline)
+- **Project 4**: GitOps-based application delivery on AWS EKS using GitHub Actions and Argo CD - [Project 4](https://github.com/ravi-rajyaguru15/Project-04-gitops-argocd)
 
 The Java web application used across this portfolio is externally sourced. Minor UI/content adjustments are made to remove source-specific branding and present it as a neutral demo web application. The infrastructure design, containerization, cloud deployment, Kubernetes manifests, Terraform configuration, CI/CD workflow setup, monitoring integration, documentation, troubleshooting, and migration-stage decisions were independently implemented. The same application stack is intentionally reused across all three projects so the focus remains on infrastructure maturity and core DevOps practices.
 
@@ -143,7 +144,13 @@ Project_02/
     
     kubectl get svc -n ingress-nginx
     ```
-9. After verification of web app, terminate and clean the EKS cluster and VPC to avoid incurring unnecessary AWS costs:
+9. After verification, remove the ingress resources before destroying the AWS infrastructure:
+
+    ```bash
+    kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/aws/deploy.yaml
+    ```
+
+10. Thenafter terminate and clean the EKS cluster and VPC to avoid incurring unnecessary AWS costs:
     ```bash
     eksctl delete cluster --name project2-eks-cluster --region us-east-1
     ```
