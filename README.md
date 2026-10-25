@@ -162,7 +162,8 @@ Project_02/
     --region us-east-1 \
     --disable-nodegroup-eviction \
     --force
-    ```   
+    ```
+       
 ---
 
 ## Engineering Insights
